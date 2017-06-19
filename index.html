@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>События</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=792, user-scalable=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="i/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="i/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="i/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="mask-icon" href="safari-pinned-tab.svg" color="#000000">
+  <meta name="apple-mobile-web-app-title" content="JavaScript Events: Kingsman">
+  <meta name="application-name" content="JavaScript Events: Kingsman">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Theme docs: https://shwr.me/shower/themes/ribbon/ -->
+</head>
+
+<body class="shower list">
+  <header class="caption">
+      <h1>JavaScript Events: Kingsman</h1>
+      <p>для Epic Skills</p>
+  </header>
+
+  <section class="slide black skip first">
+    <img src="i/bg.png" alt="" class="cover flash animated">
+  </section>
+
+  <section class="slide skip" id="cover">
+    <img src="i/bg.png" alt="" class="cover">
+    <h1 class="shout grow panel" style="width: 600px;margin-left: -300px;left: 50%;"><b>События</b></h1>
+  </section>
+
+  <section class="slide">
+    <img src="i/mosaic-browser.jpg" alt="mosaic browser" style="width: 20vw" align="right">
+    <h2>Браузер мамонта</h2>
+    <p>Динамики - никакой.</p>
+    <p>О пользователе можно узнать только то, что он открыл страницу. Да и то из логов бэкэнда.</p>
+  </section>
+  
+  <section class="slide">
+    <h2>Браузер современного человека</h2>
+    <img src="i/opera-neon-800.jpg" alt="opera neon" style="width: 20vw" align="right">
+    <p><span class="next">Тут тебе и плеер, и облако ссылок,&nbsp;и вертикальные табы, и встроенный мессенджер, и куча магии 🎩</span><br>
+    <span class="next">Но главное: в современном браузере работает javascript. И позволяет обрабатывать поведение пользователя.</span><br>
+    <mark class="next">Позволяет следить за любой мелочью, видеть всё, слушать всё.</mark><br><span class="next">Словно шпион.</span></p>
+  </section>
+
+  <section class="slide black">
+    <img src="i/kingsman.gif" alt="kingsman" class="cover">
+    <h2 class="place top left">Сегодня мы этим<br>воспользуемся</h2>
+    <h2 class="place bottom left next">Сегодня мы<br>будем шпионами</h2>
+  </section>
+
+  <section class="slide black">
+    <img src="i/team.jpg" alt="" class="cover">
+    <h2 class="place top" style="width: 580px;">Современный шпион <s>может</s></h2>
+    <h2 class="place bottom next">должен следить</h2>
+  </section>
+
+  <section class="slide black">
+    <img src="i/boom.jpg" alt="" class="cover">
+    <h2 class="place top left">Но бездействующий шпион</h2>
+    <h2 class="place bottom right next">почти мёртвый шпион</h2>
+  </section>
+
+  <section class="slide black">
+    <img src="i/you-can-transform.gif" alt="" class="shout">
+    <h2 class="place top left next">Что-то</h2>
+    <h2 class="place bottom right next">пора менять</h2>
+  </section>
+
+  <section class="slide">
+    <h2>Паттерн «Наблюдатель»</h2>
+    <p><b>Проблема</b>: код реакции на пользователя и бизнес-логики сильно связан,
+    при изменении одного приходится изменять и другой. Сложно реализовать
+    связь один-ко-многим (я выпил кофе, надо внести изменения в кошелёк, в биохимическое состояние тела,
+    в учёт лояльности кафе).</p>
+    <p><b>Решение</b>: разнести источник и потребителей события. Источник не знает о подписчиках, но знает как
+    известить их всех: он передаёт им <em>событие</em></p>
+  </section>
+
+  <section class="slide">
+    <h2>Паттерн?</h2>
+    <p>Калька с <em>pattern</em>. Устойчивая идея для решения проблемы.</p>
+    <p>Описывает проблему, дополнительные условия, идею решения. Не конкретная реализация,
+    один и тот же паттерн можно реализовать множеством способов.</p>
+  </section>
+
+  <section class="slide">
+    <h2>Окей!</h2>
+    <p>У посетителя сайта явно происходят какие-то события, а мы, как шпионы, можем их <mark>слушать</mark>, <mark>наблюдать</mark>.</p>
+    <h2>Но как? Чем?</h2>
+    <p>О каких событиях мы можем знать?</p>
+  </section>
+
+  <section class="slide black">
+    <img src="i/arsenal.jpg" alt="" class="cover">
+    <h2 class="place top panel" style="width: 100%;text-align: center;">У хорошего шпиона</h2>
+    <h2 class="place bottom next panel" style="width: 100%;text-align: center;">должно быть много инструментов</h2>
+  </section>
+
+  <section class="slide">
+    <h2>Арсенал событий</h2>
+    <p>Разберёмся, что есть в арсенале хорошего шпиона.<br></p>
+    <ul>
+      <li class="next">События мыши: <code class="next">click</code> <code class="next">dblclick</code> <code class="next">mousemove</code></li>
+      <li class="next">События клавиш: <code class="next">keydown</code> <code class="next">keyup</code> <code class="next">keypress</code></li>
+      <li class="next">События документа/файлов: <code class="next">DOMContentLoaded</code> <code class="next">load</code></li>
+      <li class="next">Интерактивность: <code class="next">change</code> <code class="next">focus</code> <code class="next">submit</code></li>
+      <li class="next">События стилей: <code class="next">transitionend</code></li>
+      <li class="next">И это далеко не все события... их мягко говоря <a href="https://developer.mozilla.org/ru/docs/Web/Events">много</a>.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Использование атрибута HTML</h2>
+    <p class="next">Обработчик может быть назначен прямо в разметке, в атрибуте, который называется on<событие>.</p>
+    <div class="next">
+      <code>&lt;button onclick="alert('Клик!')"&gt;Жми!&lt;/button&gt;</code>
+    </div>
+    <span class="next">Аккуратнее с кавычками!</span><br>
+    <mark class="next">Этот способ устарел!</mark>
+  </section>
+
+  <section class="slide">
+    <h2>Использование свойства DOM-объекта</h2>
+    <div class="next">
+      <pre>
+        <code>&lt;button id="btn"&gt;Жми!&lt;/button&gt;</code>
+        <code>&lt;script&gt;</code>
+        <code>document.getElementById('btn').onclick = function() {</code>
+        <code>  alert('Клик!');</code>
+        <code>};</code>
+        <code>&lt;/script&gt;</code>
+      </pre>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>Ключевое слово <code>this</code></h2>
+    <p>Внутри обработчика события this ссылается на тот элемент, на котором он сработал. Это можно использовать, чтобы получить, изменить элемент и его свойства.</p>
+    <code>&lt;button onclick="alert(this.innerHTML)"&gt;Жми&lt;/button&gt;</code>
+    <code>&lt;button onclick="this.innerHTML='Нажми'"&gt;Жми&lt;/button&gt;</code>
+  </section>
+
+<!-- Привязка контекста и карринг: bind https://learn.javascript.ru/bind -->
+
+  <section class="slide white">
+    <img src="i/preventDefault.jpg" alt="" class="cover">
+    <h2 class="place top left">Есть кое-что</h2>
+    <h2 class="place top right" style="text-align: right;">что нужно<br>предотвращать</h2>
+  </section>
+
+  <section class="slide">
+    <h2>Предотвратить</h2>
+    <p>Часто требуется отменять стандартное браузерное поведение.</p>
+    <pre>
+      <code>&lt;a href="vk.com" id="fun"&gt;Уходи!&lt;/button&gt;</code>
+      <code>&lt;script&gt;</code>
+      <code>document.getElementById('fun').onclick = function(event) {</code>
+      <code class="mark">  event.preventDefault();</code>
+      <code>};</code>
+      <code>&lt;/script&gt;</code>
+    </pre>
+  </section>
+
+  <sections class="slide white">
+    <img src="i/preventDefault2.gif" alt="" class="cover" style="object-fit: contain">
+    <h2 class="place top right" style="text-align: right;">Будь осторожен!<br>Не вставляй<br>остановки всюду</h2>
+  </sections>
+
+  <section class="slide">
+    <h2>Внимательнее</h2>
+    <p class="next">Назначая обработчик через DOM-свойство, будьте осторожны. Нужно так <code>elem.onclick = spy</code>, а не так <code>elem.onclick = spy()</code></p>
+    <p class="next">А вот если назначаешь через атрибут, то всё наоборот. Вот так правильно: <code>&lt;button onclick="spy()"&gt;</code></p>
+  </section>
+
+  <section class="slide">
+    <h2>Внимательнее</h2>
+    <p class="next">При использовании DOM-свойства важно понимать, что по клику должна выполниться функция.<br>Назначать так неправильно: <code>elem.onclick = "spy()"</code>.<br>А вот так норм:</p>
+    <pre class="next">
+      <code>elem.onclick = function() {</code>
+      <code>  spy();</code>
+      <code>}</code>
+    </pre>
+  </section>
+
+  <section class="slide black">
+    <img src="i/tracks.gif" alt="" class="cover">
+    <h2 class="next panel place bottom left" style="margin-left: 30px;">Пора</h2>
+    <h2 class="next panel place bottom">рулить</h2>
+    <h2 class="next panel place bottom right" style="margin-right: 30px;">треки</h2>
+  </section>
+
+  <section class="slide">
+    <h2>А как вызвать много действий?</h2>
+    <pre class="next">
+      <code>&lt;a href="vk.com" id="productivity"&gt;Важное решение!&lt;/button&gt;</code>
+      <code>&lt;script&gt;</code>
+      <code>document.getElementById('productivity').onclick = <mark>kill</mark>;</code>
+      <code>document.getElementById('productivity').onclick = <mark>increase</mark>;</code>
+      <code>&lt;/script&gt;</code>
+    </pre>
+    <p class="next"><mark>Какая функция выполнится при клике?</mark><br>
+    <span class="next"><code>onclick</code> позволяет назначать обработчики, а нам нужно их добавлять.</span><br>
+    <span class="next">Нужен другой способ добавления обработчиков. Нужен новый герой!</span></p>
+  </section>
+
+  <section class="slide white">
+    <img src="i/newHero.gif" alt="" class="cover">
+  </section>
+  
+  <section class="slide">
+    <h2>Добавление множества обработчиков</h2>
+    <p class="next"><code>addEventListener</code> - добавляем обработчик</p>
+    <pre class="next">
+      <code>&lt;a href="vk.com" id="productivity"&gt;Важное решение!&lt;/button&gt;</code>
+      <code>&lt;script&gt;</code>
+      <code>var productivity = document.getElementById('productivity');</code>
+      <code>productivity.addEventListener('click', <mark>kill</mark>);</code>
+      <code>productivity.addEventListener('click', <mark>increase</mark>);</code>
+      <code>&lt;/script&gt;</code>
+    </pre>
+  </section>
+
+  <section class="slide">
+    <h2>Удаляем обработчики</h2>
+    <p class="next"><code>removeEventListener</code> - удаляем обработчик<br>
+    <span class="next"><mark>Удаление требует ту же функцию</mark></span></p>
+    <pre class="next">
+      <code>function kill(event) {</code>
+      <code> event.preventDefault();</code>
+      <code>}</code>
+      <code>var productivity = document.getElementById('productivity');</code>
+      <code>productivity.addEventListener('click', <mark>kill</mark>);</code>
+      <code>productivity.removeEventListener('click', <mark>kill</mark>);</code>
+    </pre>
+  </section>
+
+  <section class="slide">
+    <h2>С такой же функцией - не сработает</h2>
+    <p class="next">Даже если код функций совпадает, обработчик не удалится.</p>
+    <pre class="next">
+      <code>var productivity = document.getElementById('productivity');</code>
+      <code>productivity.addEventListener('click', function(event) {</code>
+      <code> event.preventDefault();</code>
+      <code>});</code>
+      <code>productivity.removeEventListener('click', function(event) {</code>
+      <code> event.preventDefault();</code>
+      <code>});</code>
+    </pre>
+  </section>
+
+  <section class="slide">
+    <h2>Особенности</h2>
+    <p>События стилей (например, <code>transitionend</code>) можно отследить только при помощи <code>addEventListener</code></p>
+    <p>В IE8- работает <a href="https://learn.javascript.ru/introduction-browser-events#отличия-ie8">альтернативный метод <code>attachEvent</code></a>.</p>
+  </section>
+
+  <section class="slide black">
+    <img src="i/queue0.gif" alt="" class="cover" style="object-fit: contain;">
+    <h2 class="next place panel bottom left right" style="margin-bottom: 0; padding-top: 20px; padding-bottom: 30px;text-align: center">Что делать, когда событий много <span class="next">одновременно?</span></h2>
+  </section>
+
+  <section class="slide">
+    <h2>Порядок обработки событий</h2>
+    <p>События могут возникать не только по очереди, но и «пачкой» по много сразу. Возможно и такое, что во время обработки одного события возникают другие, например пока выполнялся код для onclick – посетитель нажал кнопку на клавиатуре (событие keydown).</p>
+  </section>
+
+  <section class="slide">
+    <h2>Очередь событий (main thread)</h2>
+    <p>Когда происходит событие, оно попадает в очередь.</p>
+    <p>Иногда события добавляются в очередь сразу пачкой.</p>
+    <p>Клик: <code>mousedown</code> при прожимании клавиши мыши, <code>mouseup</code> при её отпускании. И <code>click</code> сразу с <code>mouseup</code>, ибо произошёл целый клик.</p>
+  </section>
+
+  <section class="slide">
+    <h2>Синхронные события</h2>
+    <p>Обычно возникающие события «становятся в очередь».</p>
+    <p>Но в тех случаях, когда событие инициируется не посетителем, а кодом, то оно, как правило, обрабатывается синхронно, то есть прямо сейчас.</p>
+    <p><a href="https://codepen.io/fogrew/pen/qjrqpB?editors=1000">Пример</a></p>
+  </section>
+
+  <section class="slide black">
+    <img src="i/queue.gif" alt="" class="shout">
+  </section>
+
+  <section class="slide">
+    <h2>Асинхронные события</h2>
+    <p>Есть хак, чтобы сделать события асинхронными: <code>setTimeout(..., 0)</code></p>
+    <p><a href="https://codepen.io/fogrew/pen/MopbPL?editors=1000">Пример</a></p>
+  </section>
+
+  <section class="slide black">
+    <img src="i/interested.gif" alt="" class="shout">
+    <h2 class="place top" style="margin-top: 20px"><mark>event</mark></h2>
+    <h2 class="place next bottom">А что там внутри?</h2>
+  </section>
+
+  <section class="slide">
+    <h2>Объект события</h2>
+    <p>Каждый обработчик события передаёт объект события</p>
+    <pre class="next">
+      <code>var productivity = document.getElementById('productivity');</code>
+      <code>productivity.addEventListener('click', function(<mark>event</mark>) {</code>
+      <code> console.log(event.type); // click</code>
+      <code> console.log(event.target); // productivity</code>
+      <code> console.log(event.target); // productivity</code>
+      <code>});</code>
+    </pre>
+  </section>
+
+<!-- https://learn.javascript.ru/obtaining-event-object -->
+
+  <section class="slide black">
+    <h2 class="shout grow">Как посмотреть event в реальном времени?</h2>
+  </section>
+
+  <section class="slide black">
+    <img src="i/debug.gif" alt="" class="cover">
+    <h2 class="place top">Очень просто!</h2>
+    <h2 class="place bottom next" style="margin-bottom: 20px"><a href="https://codepen.io/fogrew/pen/zzZNQZ?editors=1000">посмотрим</a></h2>
+  </section>
+
+  <section class="slide">
+    <h2>Всплытие</h2>
+    <img src="i/bubbling.gif" alt="" class="place bottom right" style="width: 500px">
+    <p class="next">При наступлении события обработчики сначала срабатывают на самом вложенном элементе, затем на его родителе, затем выше и так далее, вверх по цепочке вложенности.</p>
+    <p class="next"><mark>Не все события всплывают<br>например, focus не всплывает.</mark></p>
+    <p class="next"><a href="https://codepen.io/fogrew/pen/qjrraY?editors=1000">Проверить</a></p>
+  </section>
+
+  <section class="slide">
+    <h2><code>target</code> vs <code>currentTarget</code></h2>
+    <p>На каком бы элементе мы ни поймали событие, всегда можно узнать, где конкретно оно произошло.<br>Самый глубокий элемент, который вызывает событие, называется «целевым» или «исходным» элементом и доступен как <code>event.target</code>.</p>
+    <ul>
+      <li><code>event.target</code> - это исходный элемент, на котором произошло событие, в процессе всплытия он неизменен.</li>
+      <li><code>event.currentTarget</code> (=<code>this</code>) – это текущий элемент, до которого дошло всплытие, на нём сейчас выполняется обработчик.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Предотвращение всплытия</h2>
+    <p class="next">На любом уровне всплытия можно указать, что событие полностью обработано, и остановить всплытие:</p>
+    <p class="next"><code>event.stopPropagation()</code></p>
+    <img src="i/stopPropagation.gif" alt="" style="width: 600px" class="next">
+  </section>
+
+  <section class="slide">
+    <h2>Погружение</h2>
+    <p class="next">Кроме «всплытия» событий, предусмотрено ещё и «погружение». Оно гораздо менее востребовано, но иногда, очень редко, знание о нём может быть полезным. Стандарт выделяет три стадии прохода события:</p>
+    <ul class="next">
+      <li>Событие идет сверху вниз. Эта стадия называется «стадия перехвата» (capturing stage).</li>
+      <li class="next">Событие достигло целевого элемента. Это – «стадия цели» (target stage).</li>
+      <li class="next">После этого событие начинает всплывать. Это – «стадия всплытия» (bubbling stage).</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <img src="i/eventflow.png" alt="" class="cover" style="object-fit: contain">
+  </section>
+
+  <section class="slide">
+    <h2>Погружение</h2>
+    <p class="next">Обычно про эту стадию не говорят, потому что, как правило, она не используется и проходит незаметно.<br>Чтобы поймать событие на стадии перехвата, нужно использовать третий аргумент addEventListener (фаза):</p>
+    <ul class="next">
+      <li>Если аргумент <code>true</code>, то событие будет перехвачено по дороге вниз.</li>
+      <li class="next">Если аргумент <code>false</code>, то событие будет поймано при всплытии.</li>
+    </ul>
+    <a class="next" href="https://codepen.io/fogrew/pen/WOppBp?editors=1000" style="float: left">Пример</a>
+    <a class="next" href="https://learn.javascript.ru/event-bubbling#отличия-ie8" style="float: right">у ie8- как всегда всё по-своему</a>
+  </section>
+
+  <section class="slide">
+    <h2>Почитать</h2>
+    <ul>
+      <li class="next"><a href="https://ru.wikipedia.org/wiki/%D0%A1%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D0%B9%D0%BD%D0%BE-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">Введение в событийно-ориентированное программирование</a></li>
+      <li class="next"><mark><a href="https://learn.javascript.ru/bind">Привязка контекста и карринг: "bind"</a></mark></li>
+      <li class="next"><a href="https://learn.javascript.ru/event-details">События в деталях</a></li>
+      <li class="next"><a href="https://learn.javascript.ru/event-delegation">Делегирование событий</a></li>
+      <li class="next"><a href="https://learn.javascript.ru/behavior">Приём проектирования «поведение»</a></li>
+      <li class="next"><a href="https://learn.javascript.ru/dispatch-events">Генерация событий на элементах</a></li>
+    </ul>
+  </section>
+
+  <section class="slide black">
+    <img src="i/end.gif" alt="" class="cover">
+  </section>
+
+  <div class="progress"></div>
+  <script src="shower/shower.min.js"></script>
+</body>
+</html>
